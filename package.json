@@ -1,0 +1,19 @@
+{
+  "name": "visual-decklist",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "bluebird": "^3.4.6",
+    "browserify": "^13.1.0",
+    "cls-bluebird": "^2.0.1",
+    "gulp-util": "^3.0.7",
+    "mtgsdk": "^0.1.1",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}
