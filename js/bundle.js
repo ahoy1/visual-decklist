@@ -83661,7 +83661,7 @@ var buildDeck = function(deck){
   }
   var builtWithTag = document.createElement('div');
   builtWithTag.innerHTML('built with<br>VisualDecklist.com');
-  visualDeckList.appendChild(builtWithTag)
+  visualDeckList.appendChild(builtWithTag);
   ga('send', 'event', 'DeckListBuilt');
   return false;
 }
