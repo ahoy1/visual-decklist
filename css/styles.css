@@ -188,16 +188,17 @@ header {
 
 
 .card{
-	padding: 0 35px;
+	padding: 0 10px;
 	position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   height: 30px;
-  background-position-y: -63px;
+  background-position-y: -115px;
   border-bottom: 3px solid #141011;
-  background-size: cover;
+  background-size: 120%;
+  background-position-x: 50%;
 }
 .deck-name{
   padding: 0 35px;
