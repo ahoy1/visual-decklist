@@ -43,7 +43,8 @@ var buildDeck = function(deck){
     }
     row.appendChild(manaCostTag);
     visualDeckList.appendChild(row);
-  } 
+  }
+  ga('send', 'event', 'DeckListBuilt') 
   return false;
 }
 
