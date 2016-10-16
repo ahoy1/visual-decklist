@@ -190,7 +190,7 @@ header {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 35px;
+  height: 30px;
   background-position-y: -63px;
   border-bottom: 3px solid #141011;
   background-size: cover;
@@ -209,7 +209,7 @@ header {
 	display:block;
 	content:'';
 	width:100%;
-	height:35px;
+	height:30px;
 	position:absolute;
 	top:0;
 	left:0;
