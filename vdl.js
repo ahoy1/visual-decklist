@@ -46,8 +46,10 @@ var buildDeck = function(deck){
     visualDeckList.appendChild(row);
   }
   var builtWithTag = document.createElement('div');
-  builtWithTag.innerHTML('built with<br>VisualDecklist.com');
+  builtWithTag.className = 'built-with';
+  builtWithTag.innerHTML ='built with VisualDecklist.com';
   visualDeckList.appendChild(builtWithTag);
+
   ga('send', 'event', 'DeckListBuilt');
   return false;
 }
