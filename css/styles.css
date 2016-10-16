@@ -236,6 +236,10 @@ footer p.disclaimer{
   font-size:0.8em;
 }
 
+.hidden{
+  display:none;
+}
+
 
 /* mana-cost.css */
 .mana {
