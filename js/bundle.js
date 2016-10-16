@@ -83620,7 +83620,7 @@ var buildDeck = function(deck){
   var deckNameTag = document.createElement('div');
   deckNameTag.className = 'deck-name';
   deckNameTag.innerHTML = '<div>' + deckName + '</div>';
-  visualDeckList.appendChild(deckNameTag)
+  visualDeckList.appendChild(deckNameTag);
   for (var i = 0; i < deck.length; i++) {
     //create a row representing a deckslot
     var row = document.createElement('div');
@@ -83655,11 +83655,14 @@ var buildDeck = function(deck){
       thisManaCostHTML = thisManaCostHTML.replace(/}/g, '"></span>');
       manaCostTag.innerHTML = thisManaCostHTML;
     }
-    document.getElementById('pleaseWait').className('hidden please-wait');
+    document.getElementById('pleaseWait').className = 'hidden please-wait';
     row.appendChild(manaCostTag);
     visualDeckList.appendChild(row);
   }
-  ga('send', 'event', 'DeckListBuilt') 
+  var builtWithTag = document.createElement('div');
+  builtWithTag.innerHTML('built with<br>VisualDecklist.com');
+  visualDeckList.appendChild(builtWithTag)
+  ga('send', 'event', 'DeckListBuilt');
   return false;
 }
 
@@ -83691,8 +83694,8 @@ getCardsByNames = function(cardnames){
 var btn = document.getElementById('button');  
 var deck = [];
 var deckName = '';
-document.getElementById('pleaseWait').className('please-wait');
 btn.addEventListener('click', function( event ) {
+  document.getElementById('pleaseWait').className = 'please-wait';
   deck = [];
   deckName = document.getElementById('deckName').value;
   var cardnames = [];
