@@ -83651,6 +83651,7 @@ var buildDeck = function(deck){
     if (typeof thisManaCost != 'undefined') {
       thisManaCostHTML = thisManaCost.toLowerCase();
       thisManaCostHTML = thisManaCostHTML.replace(/{/g, '<span class="mana small s');
+      thisManaCostHTML = thisManaCostHTML.replace(/\//g, '');
       thisManaCostHTML = thisManaCostHTML.replace(/}/g, '"></span>');
       manaCostTag.innerHTML = thisManaCostHTML;
     }

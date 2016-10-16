@@ -66,7 +66,7 @@ body{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  color:#212121;
+  color:#565656;
 }
 
 #search {
@@ -93,9 +93,9 @@ label{
 }
 
 input, textarea {
-  border: 1px solid #212121;
+  border: 1px solid #565656;
   width:100%;
-  padding:2px 5px;
+  padding:10px;
   font-family:'helvetica neue', arial, sans-serif;
 }
 
@@ -103,6 +103,20 @@ input, textarea, button{
   font-size:1em;
   margin-bottom: 15px;
   display:block;
+}
+
+p{
+  margin-bottom: 1em;
+}
+
+a {
+  text-decoration: none;
+  color: #673AB7;
+  font-weight: bold;
+}
+
+a:hover, a:active, a:focus{
+  color:#512DA8;
 }
 
 #button {
@@ -163,11 +177,9 @@ input, textarea, button{
 }
 
 header {
-  background: #512DA8;
-  color: #fff;
   font-family: 'Beleren-Bold';
   margin-bottom: 45px;
-  box-shadow: 0px 2.5px 15px #BDBDBD;
+  box-shadow: 0px -1.5px 15px #BDBDBD;
 }
 
 
@@ -221,8 +233,7 @@ header {
 }
 
 footer p.disclaimer{
-  font-size:12px;
-  color:#212121;
+  font-size:0.8em;
 }
 
 
