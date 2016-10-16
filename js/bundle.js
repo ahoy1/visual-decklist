@@ -83655,9 +83655,11 @@ var buildDeck = function(deck){
       thisManaCostHTML = thisManaCostHTML.replace(/}/g, '"></span>');
       manaCostTag.innerHTML = thisManaCostHTML;
     }
+    document.getElementById('pleaseWait').className('hidden please-wait');
     row.appendChild(manaCostTag);
     visualDeckList.appendChild(row);
-  } 
+  }
+  ga('send', 'event', 'DeckListBuilt') 
   return false;
 }
 
@@ -83689,6 +83691,7 @@ getCardsByNames = function(cardnames){
 var btn = document.getElementById('button');  
 var deck = [];
 var deckName = '';
+document.getElementById('pleaseWait').className('please-wait');
 btn.addEventListener('click', function( event ) {
   deck = [];
   deckName = document.getElementById('deckName').value;
