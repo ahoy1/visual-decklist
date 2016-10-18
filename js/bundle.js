@@ -83624,9 +83624,19 @@ var buildDeck = function(deck){
     row.className = 'card cardslot' + i;
     row.setAttribute('style', 'background-image:url("' + deck[i].attributes.imageUrl + '")');
 
+    //add card darken filter
+    var cardDarkenTag = document.createElement('div');
+    cardDarkenTag.className = 'card-darken';
+    row.appendChild(cardDarkenTag);
+
+    //add flex container 
+    var cardFlexTag = document.createElement('div');
+    cardFlexTag.className = 'card-flex';
+    row.appendChild(cardFlexTag);
+
     //add container for quantity and name
     var leftDivTag = document.createElement('div');
-    row.appendChild(leftDivTag);
+    cardFlexTag.appendChild(leftDivTag);
 
     //add the number
     var cardNumberTag = document.createElement('span');
@@ -83653,7 +83663,7 @@ var buildDeck = function(deck){
       manaCostTag.innerHTML = thisManaCostHTML;
     }
     document.getElementById('pleaseWait').className = 'hidden please-wait';
-    row.appendChild(manaCostTag);
+    cardFlexTag.appendChild(manaCostTag);
     visualDeckList.appendChild(row);
   }
   var builtWithTag = document.createElement('div');
