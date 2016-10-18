@@ -83611,6 +83611,14 @@ module.exports = Request
 },{"./lib/auth":404,"./lib/cookies":405,"./lib/getProxyFromURI":406,"./lib/har":407,"./lib/helpers":408,"./lib/multipart":409,"./lib/oauth":410,"./lib/querystring":411,"./lib/redirect":412,"./lib/tunnel":413,"_process":220,"aws-sign2":414,"aws4":415,"bl":417,"buffer":18,"caseless":428,"extend":431,"forever-agent":432,"form-data":433,"hawk":462,"http":242,"http-signature":463,"https":216,"is-typedarray":515,"isstream":516,"mime-types":518,"stream":241,"stringstream":527,"url":249,"util":253,"zlib":17}],537:[function(require,module,exports){
 const mtg = require('mtgsdk');
 
+//removes duplicates from an array
+function unique(arr) {
+    var seen = {};
+    return arr.filter(function(item) {
+        return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+    });
+}
+
 var vdl = {
 	state : {
 		'cardNames' : [],
@@ -83625,31 +83633,33 @@ var vdl = {
 	},
 	//parse userinput decklist into a queryList that the mtgsdk can accept
 	parseDecklist : function(deckLines){
-	  var cardNamesArr = [];
+	  var queryListArr = [];
 	  var deck = [];
-
+	  var queryName = '';
 
 	  for (var i = 0; i < deckLines.length; i++){
+	  	queryName = '';
 	    var number = deckLines[i].substr(0,deckLines[i].indexOf(' ')); //4
 	    //check if there's a number. treat lines without a number as a divider
 	    var hasNumber = !isNaN(parseInt(number));
 	    if (hasNumber) {
-	      var name = deckLines[i].substr(deckLines[i].indexOf(' ')+1); //Lighting Bolt	    	
+	      var name = deckLines[i].substr(deckLines[i].indexOf(' ')+1); //Lighting Bolt	
+
+	     	//handle "aether" and split cards 
+		    queryName = name;
+		    if (name.indexOf('aether') > -1) {
+					var queryName = name.replace ('aether', 'ether');
+		    }
+		    if (name.indexOf('//') > -1) {
+		    	var queryName = name.substr(0, name.indexOf('//')).trim();
+		    }
+
+		    queryListArr.push(queryName);    	
 	    }
 	    else {
 	    	var name = deckLines[i];
 	    }
-	    //handle "aether" and split cards 
-	    var queryName = name;
-	    if (name.indexOf('aether') > -1) {
-	    	console.log('found an aether');
-				var queryName = name.replace ('aether', 'ether');
-	    }
-	    if (name.indexOf('//') > -1) {
-	    	var queryName = name.substr(0, name.indexOf('//')).trim();
-	    }
 
-	    cardNamesArr.push(name);
 	    deck.push({
 	        'slot' : i,
 	        'name' : name,
@@ -83660,17 +83670,39 @@ var vdl = {
 	    });
 	  };
 	  vdl.state.deck = deck;
-	  queryList = cardNamesArr.join('|');
-	  vdl.state.queryList = queryList;
+	  queryListArr = unique(queryListArr);
+	  vdl.state.queryList = queryListArr;
 
-	  console.log('parseDecklist done, heres vdl.state:');
-	  console.log(vdl.state);
-
-		  //call requestCards here
+		//call requestCards here
+		 vdl.requestCards(vdl.state.queryList);
 	},
 	//make the API call
-	requestCards : function(cards){
+	requestCards : function(queryListArr){
+		console.log('requestCards called');
+		var queryListString = queryListArr.join('|');
+		console.log('queryListString:' + queryListString);
+  	var cardData = [];
+	  var emitter = mtg.card.all({ name : queryListString });
+	  emitter.on('data', card => {
+	    cardData.push(card);
+	  });
+	  emitter.on('end', finish => {
+	  	console.log('ended');
+	  	console.log(cardData);
 
+	    for (var i = 0; i < cardData.length; i++) {
+	      var thisCard = cardData[i];
+	      var thisCardName = thisCard.name.toLowerCase();
+	      for (var j = 0; j < deck.length; j++) {
+	        if (thisCardName === deck[j].name.toLowerCase()){
+	          deck[j].attributes = thisCard;
+	        }
+	      }
+	    }
+	    console.log('finished requestCards, heres vdl.state again');
+	    console.log(vdl.state);
+	    return false;
+	  });
 	},
 	//update the state, also add the state obj to localStorage
 	updateState : function(cardNames, deck, deckName, queryList){
