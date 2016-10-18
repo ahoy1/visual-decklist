@@ -67,30 +67,25 @@ var vdl = {
 	},
 	//make the API call
 	requestCards : function(queryListArr){
-		console.log('requestCards called');
 		var queryListString = queryListArr.join('|');
-		console.log('queryListString:' + queryListString);
   	var cardData = [];
 	  var emitter = mtg.card.all({ name : queryListString });
 	  emitter.on('data', card => {
 	    cardData.push(card);
 	  });
 	  emitter.on('end', finish => {
-	  	console.log('ended');
-	  	console.log(cardData);
-
 	    for (var i = 0; i < cardData.length; i++) {
 	      var thisCard = cardData[i];
 	      var thisCardName = thisCard.name.toLowerCase();
-	      for (var j = 0; j < deck.length; j++) {
-	        if (thisCardName === deck[j].name.toLowerCase()){
-	          deck[j].attributes = thisCard;
+	      for (var j = 0; j < vdl.state.deck.length; j++) {
+	        if (thisCardName === vdl.state.deck[j].name.toLowerCase()){
+	          vdl.state.deck[j].attributes = thisCard;
 	        }
 	      }
 	    }
-	    console.log('finished requestCards, heres vdl.state again');
-	    console.log(vdl.state);
-	    return false;
+
+	    //call the renderDeck function
+
 	  });
 	},
 	//update the state, also add the state obj to localStorage
@@ -122,7 +117,7 @@ var vdl = {
 		this.updateLocalStorage(this.state);
 	},
 	render : function(deck){
-
+		
 	},
 	init : function(){
 		console.log('init');
@@ -136,6 +131,9 @@ var vdl = {
 		  var deckLines = document.getElementById('decklist').value.split('\n');
 		  //strip empty elements from array. works because empty strings are falsey
 		  deckLines = deckLines.filter(Boolean);
+
+		  //clear the state from the previous decklist, if there was one
+		  vdl.clearState();
 			
 			//cardNames, deck, deckName, queryList
 			vdl.updateState('', vdl.state.deck, deckName, vdl.state.queryList);
