@@ -83610,6 +83610,13 @@ module.exports = Request
 }).call(this,require('_process'),require("buffer").Buffer)
 },{"./lib/auth":404,"./lib/cookies":405,"./lib/getProxyFromURI":406,"./lib/har":407,"./lib/helpers":408,"./lib/multipart":409,"./lib/oauth":410,"./lib/querystring":411,"./lib/redirect":412,"./lib/tunnel":413,"_process":220,"aws-sign2":414,"aws4":415,"bl":417,"buffer":18,"caseless":428,"extend":431,"forever-agent":432,"form-data":433,"hawk":462,"http":242,"http-signature":463,"https":216,"is-typedarray":515,"isstream":516,"mime-types":518,"stream":241,"stringstream":527,"url":249,"util":253,"zlib":17}],537:[function(require,module,exports){
 const mtg = require('mtgsdk');
+// mtg.card.all({ name: 'ether hub|dismember'})
+// 	.on('data', card => {
+// 	    console.log(card.name);
+// 	    console.log(card);
+// 	}
+// );
+
 
 //removes duplicates from an array
 function unique(arr) {
@@ -83646,10 +83653,11 @@ var vdl = {
 	      var name = deckLines[i].substr(deckLines[i].indexOf(' ')+1); //Lighting Bolt	
 
 	     	//handle "aether" and split cards 
-		    queryName = name;
+		    queryName = name.toLowerCase();
 		    if (name.indexOf('aether') > -1) {
 					var queryName = name.replace ('aether', 'ether');
 		    }
+		    //handle split cards
 		    if (name.indexOf('//') > -1) {
 		    	var queryName = name.substr(0, name.indexOf('//')).trim();
 		    }
@@ -83674,11 +83682,12 @@ var vdl = {
 	  vdl.state.queryList = queryListArr;
 
 		//call requestCards here
-		 vdl.requestCards(vdl.state.queryList);
+		vdl.requestCards(vdl.state.queryList);
 	},
 	//make the API call
 	requestCards : function(queryListArr){
-		var queryListString = queryListArr.join('|');
+		console.log(vdl.state.deck);
+		var queryListString = queryListArr.join('|').toLowerCase();
   	var cardData = [];
 	  var emitter = mtg.card.all({ name : queryListString });
 	  emitter.on('data', card => {
@@ -83688,15 +83697,16 @@ var vdl = {
 	    for (var i = 0; i < cardData.length; i++) {
 	      var thisCard = cardData[i];
 	      var thisCardName = thisCard.name.toLowerCase();
+	      console.log(thisCardName);
 	      for (var j = 0; j < vdl.state.deck.length; j++) {
+	      	console.log(vdl.state.deck[j].name.toLowerCase());
 	        if (thisCardName === vdl.state.deck[j].name.toLowerCase()){
 	          vdl.state.deck[j].attributes = thisCard;
 	        }
 	      }
 	    }
-
 	    //call the renderDeck function
-
+			vdl.renderDeck();
 	  });
 	},
 	//update the state, also add the state obj to localStorage
@@ -83727,11 +83737,76 @@ var vdl = {
 		};
 		this.updateLocalStorage(this.state);
 	},
-	render : function(deck){
-		
+	renderDeck : function(){
+		var deck = vdl.state.deck;
+		var visualDeckList = document.getElementById('visualDeckList');
+	  visualDeckList.innerHTML = '';
+	  var deckNameTag = document.createElement('div');
+	  deckNameTag.className = 'deck-name';
+	  deckNameTag.innerHTML = '<div>' + vdl.state.deckName + '</div>';
+	  visualDeckList.appendChild(deckNameTag);
+	  for (var i = 0; i < deck.length; i++) {
+	    //create a row representing a deckslot
+	    var row = document.createElement('div');
+	    row.className = 'card cardslot' + i;
+
+		  //add card darken filter
+	    var cardDarkenTag = document.createElement('div');
+	    cardDarkenTag.className = 'card-darken';
+	    row.appendChild(cardDarkenTag);
+
+	    //add flex container 
+	    var cardFlexTag = document.createElement('div');
+	    cardFlexTag.className = 'card-flex';
+	    row.appendChild(cardFlexTag);
+
+	    //add container for quantity and name
+	    var leftDivTag = document.createElement('div');
+	    cardFlexTag.appendChild(leftDivTag);
+
+	    if (deck[i].isDivider) {
+				row.className = row.className + ' divider';
+	    }
+	    else{
+	    	row.setAttribute('style', 'background-image:url("' + deck[i].attributes.imageUrl + '")');
+	    	//add the quantity
+		    var quantityTag = document.createElement('span');
+		    quantityTag.className = 'card-quantity';
+		    quantityTag.innerHTML = deck[i].quantity + '&nbsp;';
+		    leftDivTag.appendChild(quantityTag);
+
+		    //add the mana cost
+		    var manaCostTag = document.createElement('div');
+		    manaCostTag.className = 'mana-cost';
+		    var thisManaCost = deck[i].attributes.manaCost;
+		    if (typeof thisManaCost != 'undefined') {
+		      thisManaCostHTML = thisManaCost.toLowerCase();
+		      thisManaCostHTML = thisManaCostHTML.replace(/{/g, '<span class="mana small s');
+		      thisManaCostHTML = thisManaCostHTML.replace(/\//g, '');
+		      thisManaCostHTML = thisManaCostHTML.replace(/}/g, '"></span>');
+		      manaCostTag.innerHTML = thisManaCostHTML;
+		    }
+		    cardFlexTag.appendChild(manaCostTag);
+			}
+		  //add the name
+	    var cardNameTag = document.createElement('span');
+	    cardNameTag.className = 'card-name';
+	    cardNameTag.textContent = deck[i].name;
+	    leftDivTag.appendChild(cardNameTag);
+	    visualDeckList.appendChild(row);
+	  }
+
+	  var builtWithTag = document.createElement('div');
+	  builtWithTag.className = 'built-with';
+	  builtWithTag.innerHTML ='built with VisualDecklist.com';
+	  visualDeckList.appendChild(builtWithTag);
+	  document.getElementById('pleaseWait').className = 'hidden please-wait';
+
+
+	  ga('send', 'event', 'DeckListBuilt');
+	  return false;
 	},
 	init : function(){
-		console.log('init');
 		document.getElementById('button').addEventListener('click', function(){
 
 			//activate please wait text

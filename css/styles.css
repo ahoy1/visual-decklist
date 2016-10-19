@@ -217,7 +217,7 @@ header {
 	position:absolute;
 	top:0;
 	left:0;
-	background:rgba(0,0,0,0.3);
+	background:linear-gradient( to right, rgba(0,0,0,9), transparent);
 	z-index: 1;
   overflow:hidden;
 }
@@ -225,6 +225,10 @@ header {
   width: 100%;
   display:flex;
   justify-content: space-between;
+}
+.divider .card-flex div {
+    width: 100%;
+    text-align: right;
 }
 .visual-deck-list{
   font-family: Beleren-Bold;
