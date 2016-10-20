@@ -61,6 +61,7 @@ table {
 
 body{
   font-size: 18px;
+  line-height: 1.2em;
   margin:0;
 	font-family: 'helvetica neue', arial, sans-serif;
   display: flex;
@@ -117,6 +118,15 @@ a {
 
 a:hover, a:active, a:focus{
   color:#512DA8;
+}
+
+ul {
+  list-style: disc;
+  padding-left: 30px;
+}
+
+ul li{
+  margin: 0.3em;
 }
 
 #button {
@@ -185,7 +195,6 @@ header {
 .please-wait{
   text-align: center;
 }
-
 
 .card{
 	padding: 0 10px;
