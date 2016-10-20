@@ -32,9 +32,13 @@ var vdl = {
 	  var queryListArr = [];
 	  var deck = [];
 	  var queryName = '';
+	  var splitPartner = '';
+	  var isSplit = false;
 
 	  for (var i = 0; i < deckLines.length; i++){
 	  	queryName = '';
+	  	splitPartner = '';
+	  	isSplit = false;
 	    var number = deckLines[i].substr(0,deckLines[i].indexOf(' ')); //4
 	    //check if there's a number. treat lines without a number as a divider
 	    var hasNumber = !isNaN(parseInt(number));
@@ -48,7 +52,9 @@ var vdl = {
 		    }
 		    //handle split cards
 		    if (name.indexOf('//') > -1) {
-		    	var queryName = name.substr(0, name.indexOf('//')).trim();
+		    	isSplit = true;
+		    	var queryName = name.substr(0, name.indexOf('//')).trim().toLowerCase();
+
 		    }
 
 		    queryListArr.push(queryName);    	
@@ -62,6 +68,8 @@ var vdl = {
 	        'name' : name,
 	        'queryName': queryName,
 	        'quantity' : number,
+	        'isSplit' : isSplit,
+	        'splitPartner' : splitPartner,
 	        'isDivider' : !hasNumber,
 	        'attributes' : {}
 	    });
@@ -71,11 +79,11 @@ var vdl = {
 	  vdl.state.queryList = queryListArr;
 
 		//call requestCards here
+		vdl.updateLocalStorage(vdl.state);
 		vdl.requestCards(vdl.state.queryList);
 	},
 	//make the API call
 	requestCards : function(queryListArr){
-		console.log(vdl.state.deck);
 		var queryListString = queryListArr.join('|').toLowerCase();
   	var cardData = [];
 	  var emitter = mtg.card.all({ name : queryListString });
@@ -86,11 +94,16 @@ var vdl = {
 	    for (var i = 0; i < cardData.length; i++) {
 	      var thisCard = cardData[i];
 	      var thisCardName = thisCard.name.toLowerCase();
-	      console.log(thisCardName);
 	      for (var j = 0; j < vdl.state.deck.length; j++) {
-	      	console.log(vdl.state.deck[j].name.toLowerCase());
-	        if (thisCardName === vdl.state.deck[j].name.toLowerCase()){
-	          vdl.state.deck[j].attributes = thisCard;
+	        // if (thisCardName === vdl.state.deck[j].name.toLowerCase()){
+	        //   vdl.state.deck[j].attributes = thisCard;
+	        // }
+
+	        // do fuzzy matching to account for split cards
+	        // this could cause problems if a split card name is contined w/in another card name
+	        // think fire//ice and fireball
+	        if (vdl.state.deck[j].name.toLowerCase().indexOf(thisCardName) > -1) {
+	          vdl.state.deck[j].attributes = thisCard;	
 	        }
 	      }
 	    }
@@ -157,7 +170,19 @@ var vdl = {
 				row.className = row.className + ' divider';
 	    }
 	    else{
-	    	row.setAttribute('style', 'background-image:url("' + deck[i].attributes.imageUrl + '")');
+
+	    	//add card bg 
+		    var cardBgTag = document.createElement('div');
+		    cardBgTag.className = 'card-bg';
+		    row.appendChild(cardBgTag);
+
+	    	if (deck[i].isSplit){
+	    		cardBgTag.setAttribute('style', 'background-image:url("' + deck[i].attributes.imageUrl + '"), url("' + deck[i].attributes.imageUrl + '")');
+					row.className = row.className + ' split-card';
+	    	}
+	    	else {
+	    	  cardBgTag.setAttribute('style', 'background-image:url("' + deck[i].attributes.imageUrl + '")');
+	    	}
 	    	//add the quantity
 		    var quantityTag = document.createElement('span');
 		    quantityTag.className = 'card-quantity';

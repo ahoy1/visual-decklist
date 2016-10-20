@@ -195,9 +195,29 @@ header {
   align-items: center;
   width: 100%;
   height: 30px;
-  background-position:50% -115px;
+  background-position:32px -90px;
   border-bottom: 3px solid #141011;
-  background-size: 120%;
+  background-size: 100%;
+  overflow: hidden;
+}
+.card-bg {
+    width: 100%;
+    position: absolute;
+    height: 30px;
+    background-position: 32px -90px;
+    background-size: 100%;
+    left: 0;
+    top: 0;
+}
+.split-card .card-bg {
+    transform: rotate(90deg);
+    height: 350px;
+    width: 350px;
+    background-size: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    background-position: -71px -59px;
 }
 .deck-name{
   padding: 0 35px;
@@ -206,7 +226,7 @@ header {
   border-bottom: 3px solid #777;
   font-size: 18px;
 }
-.card>div{
+.card-darken, .card-flex{
 	z-index: 2;
 }
 .card .card-darken{
@@ -217,7 +237,7 @@ header {
 	position:absolute;
 	top:0;
 	left:0;
-	background:linear-gradient( to right, rgba(0,0,0,9), transparent);
+	background:linear-gradient( to right, rgba(0,0,0,1), transparent);
 	z-index: 1;
   overflow:hidden;
 }
