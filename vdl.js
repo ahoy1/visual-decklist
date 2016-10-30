@@ -125,7 +125,7 @@ var vdl = {
 		if (queryList) {
 			this.state.queryList = queryList;
 		}
-		vdl.updateLocalStorage(vdl.state);
+		vdl.updateLocalStorage(this.state);
 	},
 	updateLocalStorage : function(state){
 		localStorage.setItem('visualDecklistState', state)
@@ -212,7 +212,7 @@ var vdl = {
 
 	  var builtWithTag = document.createElement('div');
 	  builtWithTag.className = 'built-with';
-	  builtWithTag.innerHTML ='VisualDecklist.com';
+	  builtWithTag.innerHTML ='built with VisualDecklist.com';
 	  visualDeckList.appendChild(builtWithTag);
 	  document.getElementById('pleaseWait').className = 'hidden please-wait';
 
@@ -240,6 +240,10 @@ var vdl = {
 
 			vdl.parseDecklist(deckLines);			
 		 }, false);
+	},
+
+	render : function(){
+
 	},
 }
 
