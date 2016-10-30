@@ -57,8 +57,31 @@ etc...
 			</div>
 		</footer>
 		<script src="js/html2canvas.js"></script>
-
 		<script src="js/bundle.js"></script>
+		<script>
+    	document.getElementById('screenShot').addEventListener('click', function(){
+				html2canvas(document.body, {
+            "logging": true, //Enable log (use Web Console for get Errors and Warnings)
+            "proxy":"php/html2canvasproxy.php",
+            "onrendered": function(canvas) {
+                var img = new Image();
+                img.onload = function() {
+                    img.onload = null;
+                    document.body.appendChild(canvas);
+                };
+                img.onerror = function() {
+                    img.onerror = null;
+                    if(window.console.log) {
+                        window.console.log("Not loaded image from canvas.toDataURL");
+                    } else {
+                        alert("Not loaded image from canvas.toDataURL");
+                    }
+                };
+                img.src = canvas.toDataURL("image/png");
+            }
+        });
+    	});
+    </script>
 		<script>
 		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
