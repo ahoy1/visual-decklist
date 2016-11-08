@@ -260,7 +260,8 @@ header {
     text-align: right;
 }
 .visual-deck-list{
-  font-family: Beleren-Bold;
+  /*font-family: Beleren-Bold;*/
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	width:350px;
 	border-top: 10px solid transparent;
 	border-bottom:10px solid transparent;
