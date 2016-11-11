@@ -1,64 +1,3 @@
-<script>
-	//js ajax functions
-function getOutput(postdata) {
-  getRequest(
-    	'test2.php', // URL for the PHP file
-       postdata, 		// our POST data
-       drawOutput,  // handle successful request
-       drawError    // handle error
-  );
-  return false;
-} 
-
-
-// handles drawing an error message
-function drawError () {
-    var container = document.getElementById('output');
-    container.innerHTML = 'Bummer: there was an error!';
-}
-// handles the response, adds the html
-function drawOutput(responseText) {
-    var container = document.getElementById('output');
-    container.innerHTML = responseText;
-}
-// helper function for cross-browser request object
-function getRequest(url, postdata, success, error) {
-    var req = false;
-    try{
-        // most browsers
-        req = new XMLHttpRequest();
-    } catch (e){
-        // IE old versions
-        try{
-            req = new ActiveXObject("Msxml2.XMLHTTP");
-        } catch (e) {
-            // try an older version
-            try{
-                req = new ActiveXObject("Microsoft.XMLHTTP");
-            } catch (e){
-                return false;
-            }
-        }
-    }
-    if (!req) return false;
-    if (typeof success != 'function') success = function () {};
-    if (typeof error!= 'function') error = function () {};
-    req.onreadystatechange = function(){
-        if(req .readyState == 4){
-            return req.status === 200 ? 
-                success(req.responseText) : error(req.status)
-            ;
-        }
-    }
-    req.open("POST", url, true);
-      req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  		req.send(postdata); 
-    //req.send(null);
-    return req;
-}
-</script>
-<button onclick="return getOutput(encodeURI('cardname=nph_blighted-agent&cardurl=http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=214383%26type=card'));">run the ajax</button>
-<div id="output">waiting for actions</div>
 <html>
 	<head>
 		<meta charset="UTF-8" />
@@ -67,6 +6,9 @@ function getRequest(url, postdata, success, error) {
 		<link rel="stylesheet" href="css/styles.css">
 	</head>
 	<body>	
+    <button id="saveit">Save Blighted Agent</button>
+    <div id="output">waiting for actions</div>
+
 	  <div class="top">
 			<header>
 				<div class="container">
@@ -85,7 +27,7 @@ function getRequest(url, postdata, success, error) {
 2 Breeding Pool
 SIDEBOARD
 3 Grafdigger's Cage
-etc...">Blighted Agent
+etc...">4 Blighted Agent
 3 Blossoming Defense
 2 Breeding Pool
 SIDEBOARD
@@ -117,6 +59,7 @@ etc...
 				<p class="disclaimer">This website is not produced by, endorsed by, supported by, or affiliated with Wizards of the Coast. The copyright for Magic: the Gathering and all associated card names and card images is held by Wizards of the Coast.</p>
 			</div>
 		</footer>
+
 		<script src="js/html2canvas.js"></script>
 		<script src="js/bundle.js"></script>
 		<script>

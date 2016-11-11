@@ -1,3 +1,66 @@
+//js ajax functions
+function getOutput(postdata) {
+  getRequest(
+    	'save-to-server.php', // URL for the PHP file
+       postdata, 		// our POST data
+       drawOutput,  // handle successful request
+       drawError    // handle error
+  );
+  return false;
+} 
+
+// handles drawing an error message
+function drawError () {
+    var container = document.getElementById('output');
+    container.innerHTML = 'Bummer: there was an error!';
+}
+// handles the response, adds the html
+function drawOutput(responseText) {
+    var container = document.getElementById('output');
+    container.innerHTML = responseText;
+}
+// helper function for cross-browser request object
+function getRequest(url, postdata, success, error) {
+    var req = false;
+    try{
+        // most browsers
+        req = new XMLHttpRequest();
+    } catch (e){
+        // IE old versions
+        try{
+            req = new ActiveXObject("Msxml2.XMLHTTP");
+        } catch (e) {
+            // try an older version
+            try{
+                req = new ActiveXObject("Microsoft.XMLHTTP");
+            } catch (e){
+                return false;
+            }
+        }
+    }
+    if (!req) return false;
+    if (typeof success != 'function') success = function () {};
+    if (typeof error!= 'function') error = function () {};
+    req.onreadystatechange = function(){
+        if(req .readyState == 4){
+            return req.status === 200 ? 
+                success(req.responseText) : error(req.status)
+            ;
+        }
+    }
+    req.open("POST", url, true);
+      req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  		req.send(postdata); 
+    //req.send(null);
+    return req;
+}
+
+document.getElementById('saveit').addEventListener('click', function(){
+	return getOutput(encodeURI(
+		'cardurls=http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=214383%26type=card,http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=214383%26type=card,http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=405095%26type=card&cardnames=Blighted Agent,Fake Blighted Agent,Breeding Pool'
+		));
+})
+
 const mtg = require('mtgsdk');
 // mtg.card.all({ name: 'ether hub|dismember'})
 // 	.on('data', card => {
@@ -106,9 +169,27 @@ var vdl = {
 	        }
 	      }
 	    }
-	    //call the renderDeck function
-			vdl.renderDeck();
+	
+	    //call the saveCardImages function
+			vdl.saveCardImages();
 	  });
+	},
+	//save card images to the server
+	saveCardImages : function(){	
+		console.log('saveCardImages called');
+		var queryStringURLs = "cardurls=";
+		var queryStringNames = "cardnames=";
+		var deck = vdl.state.deck;
+
+		for (var i = 0; i < deck.length; i++) {
+			if (deck[i].isDivider != true) {
+				queryStringURLs = queryStringURLs + deck[i].attributes.imageUrl.replace('&type=card', '%26type=card') + ',';
+				queryStringNames = queryStringNames + encodeURI(deck[i].attributes.name) + ',';
+			}
+		}
+		var queryString = queryStringURLs.replace(/,\s*$/, "") + '&' + queryStringNames.replace(/,\s*$/, "");
+		getOutput(queryString);
+		vdl.renderDeck();
 	},
 	//update the state, also add the state obj to localStorage
 	updateState : function(cardNames, deck, deckName, queryList){
@@ -176,11 +257,13 @@ var vdl = {
 		    row.appendChild(cardBgTag);
 
 	    	if (deck[i].isSplit){
-	    		cardBgTag.setAttribute('style', 'background-image:url("' + deck[i].attributes.imageUrl + '"), url("' + deck[i].attributes.imageUrl + '")');
+	    		//cardBgTag.setAttribute('style', 'background-image:url("' + deck[i].attributes.imageUrl + '"), url("' + deck[i].attributes.imageUrl + '")');
+	    		cardBgTag.setAttribute('style', 'background-image:url("img/' + encodeURIComponent(deck[i].attributes.name) + '.jpg"), url("img/' + encodeURIComponent(deck[i].attributes.name) + '.jpg")');
 					row.className = row.className + ' split-card';
 	    	}
 	    	else {
-	    	  cardBgTag.setAttribute('style', 'background-image:url("' + deck[i].attributes.imageUrl + '")');
+	    	  //cardBgTag.setAttribute('style', 'background-image:url("' + deck[i].attributes.imageUrl + '")');
+	    		cardBgTag.setAttribute('style', 'background-image:url("img/' + encodeURIComponent(deck[i].attributes.name) + '.jpg")');
 	    	}
 	    	//add the quantity
 		    var quantityTag = document.createElement('span');
