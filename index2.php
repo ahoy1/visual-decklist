@@ -6,9 +6,6 @@
 		<link rel="stylesheet" href="css/styles.css">
 	</head>
 	<body>	
-    <button id="saveit">Save Blighted Agent</button>
-    <div id="output">waiting for actions</div>
-
 	  <div class="top">
 			<header>
 				<div class="container">

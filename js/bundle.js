@@ -83666,12 +83666,6 @@ function getRequest(url, postdata, success, error) {
     return req;
 }
 
-document.getElementById('saveit').addEventListener('click', function(){
-	return getOutput(encodeURI(
-		'cardurls=http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=214383%26type=card,http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=214383%26type=card,http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=405095%26type=card&cardnames=Blighted Agent,Fake Blighted Agent,Breeding Pool'
-		));
-})
-
 const mtg = require('mtgsdk');
 // mtg.card.all({ name: 'ether hub|dismember'})
 // 	.on('data', card => {
@@ -83888,9 +83882,10 @@ var vdl = {
 		    var thisManaCost = deck[i].attributes.manaCost;
 		    if (typeof thisManaCost != 'undefined') {
 		      thisManaCostHTML = thisManaCost.toLowerCase();
-		      thisManaCostHTML = thisManaCostHTML.replace(/{/g, '<span class="mana small s');
+		      thisManaCostHTML = thisManaCostHTML.replace(/{/g, '<span class="mana m-');
 		      thisManaCostHTML = thisManaCostHTML.replace(/\//g, '');
 		      thisManaCostHTML = thisManaCostHTML.replace(/}/g, '"></span>');
+		      console.log(thisManaCostHTML);
 		      manaCostTag.innerHTML = thisManaCostHTML;
 		    }
 		    cardFlexTag.appendChild(manaCostTag);
