@@ -131,17 +131,18 @@ ul li{
 
 .button-open{
     border:5px solid #673AB7;
-    border: 0 none;
     color: #673AB7;
     padding: 15px 45px;
     cursor: pointer;
     font-size: 22px;
     font-weight: bold;
+    background-transparent;
 }
 
 .button-open:hover, .button-open:active{
     background: #512DA8;
-    border-color: #512DA8;   
+    border-color: #512DA8; 
+    color:#ffffff;  
 }
 
 .button-primary {
@@ -156,6 +157,11 @@ ul li{
 
 .button-primary:hover, .button-primary:active {
     background: #512DA8;
+}
+
+button#screenshot{
+  width:290px;
+  margin:0 auto;
 }
 
 .container{
@@ -306,8 +312,28 @@ header {
   font-family: 'helvetica neue', arial, sans-serif;
 }
 
+.middle{
+  background: #dcc7ff;
+  padding: 25px 0;
+}
+
+footer{
+  padding:25px 0;
+  background: #673ab7;
+  color: white;
+}
+
 footer p.disclaimer{
   font-size:0.8em;
+}
+
+footer a{
+  color: #dcc7ff;
+}
+
+footer a:hover, footer a:active{
+  color:#ffffff;
+
 }
 
 .hidden{

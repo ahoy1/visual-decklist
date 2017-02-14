@@ -6,7 +6,7 @@
 		<link rel="stylesheet" href="css/styles.css">
 	</head>
 	<body>	
-	  <div class="top">
+	  <section class="top">
 			<header>
 				<div class="container">
 					<h1>MTG Visual Decklist Generator</h1>
@@ -31,32 +31,38 @@ SIDEBOARD
 3 Grafdigger's Cage
 etc...
 </textarea>
-							<button id="button">Generate Deck</button>
-							<ul>
-								<li>Enter cards 1-per-line, in the format "quantity name" (i.e. "4 Lightning Bolt")</li>
-								<li>Enter split cards with "//" separating the car names ("Fire // Ice").</li>
-								<li>Enter section dividers (sideboard, maybeboard, or any other divider you like) as their own line with no quantity</li>
-							</ul>
+							<button id="button" class="button-primary">Generate Deck</button>
 					  </div>
 					</div>
 					<div class="col col-right">
 						<p class="hidden please-wait" id="pleaseWait">Fetching card data...</p>
 						<div id="visualDeckList" class="visual-deck-list">
 						</div>
-						<button id="screenShot">Generate Saveable PNG</button>
+						<button id="screenShot" class="button-primary">Get Saveable PNG</button>
 						<div id="imageContainer" style="width:350px;max-width:100%"></div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</section>
+		<section class="middle">
+			<div class="container">
+				<ul>
+					<li>Enter cards 1-per-line, in the format "quantity name" (i.e. "4 Lightning Bolt")</li>
+					<li>Enter split cards with "//" separating the car names ("Fire // Ice").</li>
+					<li>Enter section dividers (sideboard, maybeboard, or any other divider you like) as their own line with no quantity</li>
+				</ul>
+				<p>Spot a bug? Have comments, or suggestions? <a href="https://twitter.com/cob_is_online" target="_blank">Tweet at me</a> or email me at jacobpatrickharris@gmail.com</p>
+			</div>
+		</section>
 		<div id="canvas-container" class="canvas-container">
 			<span class="close">close</span>
 			<p>Left click to save image</p>
 		</div>
 		<footer>
 			<div class="container">
-				<p>Spot a bug? Have comments, or suggestions? <a href="https://twitter.com/cob_is_online" target="_blank">Tweet at me</a> or email me at jacobpatrickharris@gmail.com</p>
-				<p>Made possible thanks to the <a href="https://magicthegathering.io/" target="_blank">MTG API</a> and <a href="https://github.com/micku/mana-cost" target="_blank">micku's SVG mana cost library</a>. You can <a href="https://github.com/ahoy1/visual-decklist/" target="_blank">view this project on github</a>.</p>
+				
+				<p>Made possible thanks to the <a href="https://magicthegathering.io/" target="_blank">MTG API</a>.</p>
+				<p>You can <a href="https://github.com/ahoy1/visual-decklist/" target="_blank">view this project on github</a>.</p>
 				<p class="disclaimer">This website is not produced by, endorsed by, supported by, or affiliated with Wizards of the Coast. The copyright for Magic: the Gathering and all associated card names and card images are held by Wizards of the Coast.</p>
 			</div>
 		</footer>
