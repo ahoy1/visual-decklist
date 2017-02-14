@@ -83627,8 +83627,8 @@ function drawError () {
 }
 // handles the response, adds the html
 function drawOutput(responseText) {
-    var container = document.getElementById('output');
-    container.innerHTML = responseText;
+    //var container = document.getElementById('output');
+    //container.innerHTML = responseText;
 }
 // helper function for cross-browser request object
 function getRequest(url, postdata, success, error) {
@@ -83825,6 +83825,8 @@ var vdl = {
 		this.updateLocalStorage(this.state);
 	},
 	renderDeck : function(){
+		//display the contents of .col-right
+		document.querySelector('.col-right').classList.add('active');
 		var deck = vdl.state.deck;
 		var visualDeckList = document.getElementById('visualDeckList');
 	  visualDeckList.innerHTML = '';
@@ -83840,26 +83842,37 @@ var vdl = {
 		  //add card darken filter
 	    var cardDarkenTag = document.createElement('div');
 	    cardDarkenTag.className = 'card-darken';
-	    row.appendChild(cardDarkenTag);
-
-	    //add flex container 
-	    var cardFlexTag = document.createElement('div');
-	    cardFlexTag.className = 'card-flex';
-	    row.appendChild(cardFlexTag);
-
-	    //add container for quantity and name
-	    var leftDivTag = document.createElement('div');
-	    cardFlexTag.appendChild(leftDivTag);
 
 	    if (deck[i].isDivider) {
+
+	    	//cardFlexTag & leftTagDiv is duplicated in either side of this if statement
+	    	//these elements have to be appeneded to the DOM AFTER the cardBgTag div to
+	    	//to make the screenshot work properly
+
+	    	//add flex container 
+		    var cardFlexTag = document.createElement('div');
+		    cardFlexTag.className = 'card-flex';
+
+		    //add container for quantity and name
+		    var leftDivTag = document.createElement('div');
+		    cardFlexTag.appendChild(leftDivTag);
+
 				row.className = row.className + ' divider';
 	    }
-	    else{
+	    else {
 
 	    	//add card bg 
 		    var cardBgTag = document.createElement('div');
 		    cardBgTag.className = 'card-bg';
 		    row.appendChild(cardBgTag);
+
+		    //add flex container 
+		    var cardFlexTag = document.createElement('div');
+		    cardFlexTag.className = 'card-flex';
+
+		    //add container for quantity and name
+		    var leftDivTag = document.createElement('div');
+		    cardFlexTag.appendChild(leftDivTag);
 
 	    	if (deck[i].isSplit){
 	    		//cardBgTag.setAttribute('style', 'background-image:url("' + deck[i].attributes.imageUrl + '"), url("' + deck[i].attributes.imageUrl + '")');
@@ -83890,6 +83903,10 @@ var vdl = {
 		    }
 		    cardFlexTag.appendChild(manaCostTag);
 			}
+	    row.appendChild(cardDarkenTag);
+
+	    row.appendChild(cardFlexTag);
+			
 		  //add the name
 	    var cardNameTag = document.createElement('span');
 	    cardNameTag.className = 'card-name';
