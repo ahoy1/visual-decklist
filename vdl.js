@@ -163,6 +163,8 @@ var vdl = {
 	        }
 	      }
 	    }
+
+	    console.log(cardData);
 	
 	    //call the saveCardImages function
 			vdl.saveCardImages();
@@ -171,6 +173,7 @@ var vdl = {
 	//save card images to the server
 	saveCardImages : function(){	
 		console.log('saveCardImages called');
+		console.log(vdl.state);
 		var queryStringURLs = "cardurls=";
 		var queryStringNames = "cardnames=";
 		var deck = vdl.state.deck;
@@ -178,10 +181,12 @@ var vdl = {
 		for (var i = 0; i < deck.length; i++) {
 			if (deck[i].isDivider != true) {
 				queryStringURLs = queryStringURLs + deck[i].attributes.imageUrl.replace('&type=card', '%26type=card') + ',';
+				console.log(queryStringURLs);
 				queryStringNames = queryStringNames + encodeURI(deck[i].attributes.name) + ',';
 			}
 		}
 		var queryString = queryStringURLs.replace(/,\s*$/, "") + '&' + queryStringNames.replace(/,\s*$/, "");
+		console.log(`query string is ${queryString}`);
 		getOutput(queryString);
 		vdl.renderDeck();
 	},

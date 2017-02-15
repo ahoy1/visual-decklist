@@ -1,34 +1,34 @@
 <?php
-function mergeImages($filename_x, $filename_y, $filename_result) {
+// function mergeImages($filename_x, $filename_y, $filename_result) {
 
- // Get dimensions for specified images
+//  // Get dimensions for specified images
 
- list($width_x, $height_x) = getimagesize($filename_x);
- list($width_y, $height_y) = getimagesize($filename_y);
+//  list($width_x, $height_x) = getimagesize($filename_x);
+//  list($width_y, $height_y) = getimagesize($filename_y);
 
- // Create new image with desired dimensions
+//  // Create new image with desired dimensions
 
- $image = imagecreatetruecolor($width_x + $width_y, $height_x);
+//  $image = imagecreatetruecolor($width_x + $width_y, $height_x);
 
- // Load images and then copy to destination image
+//  // Load images and then copy to destination image
 
- $image_x = imagecreatefromjpeg($filename_x);
- $image_y = imagecreatefromgif($filename_y);
+//  $image_x = imagecreatefromjpeg($filename_x);
+//  $image_y = imagecreatefromgif($filename_y);
 
- imagecopy($image, $image_x, 0, 0, 0, 0, $width_x, $height_x);
- imagecopy($image, $image_y, $width_x, 0, 0, 0, $width_y, $height_y);
+//  imagecopy($image, $image_x, 0, 0, 0, 0, $width_x, $height_x);
+//  imagecopy($image, $image_y, $width_x, 0, 0, 0, $width_y, $height_y);
 
- // Save the resulting image to disk (as JPEG)
+//  // Save the resulting image to disk (as JPEG)
 
- imagejpeg($image, $filename_result);
+//  imagejpeg($image, $filename_result);
 
- // Clean up
+//  // Clean up
 
- imagedestroy($image);
- imagedestroy($image_x);
- imagedestroy($image_y);
+//  imagedestroy($image);
+//  imagedestroy($image_x);
+//  imagedestroy($image_y);
 
-}
+// }
 
 $cardnames = (isset($_POST['cardnames'])) ? $_POST['cardnames'] : 'no name';
 /*$cardnames = str_replace('%20', '', $cardnames);
@@ -48,7 +48,7 @@ for ($i=0; $i < count($cardnames); $i++) {
 	curl_close($ch);
 	fclose($fp);
 
-	merge('images/gradient-overlay.png', 'img/' . $cardnames[$i] . '.jpg', 'images/' . $cardnames[$i] . '_dark	.jpg');
+	//merge('images/gradient-overlay.png', 'img/' . $cardnames[$i] . '.jpg', 'images/' . $cardnames[$i] . '_dark	.jpg');
 }
 
 
