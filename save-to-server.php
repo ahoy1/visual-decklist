@@ -40,15 +40,21 @@ $cardurls = str_replace('%26', '&', $cardurls);
 $cardurls = explode(',', $cardurls);
 
 for ($i=0; $i < count($cardnames); $i++) { 
-	$ch = curl_init($cardurls[$i]);
-	$fp = fopen('img/' . $cardnames[$i] . '.jpg', 'wb');
-	curl_setopt($ch, CURLOPT_FILE, $fp);
-	curl_setopt($ch, CURLOPT_HEADER, 0);
-	curl_exec($ch);
-	curl_close($ch);
-	fclose($fp);
 
-	//merge('images/gradient-overlay.png', 'img/' . $cardnames[$i] . '.jpg', 'images/' . $cardnames[$i] . '_dark	.jpg');
+$filename = 'img/' . $cardnames[$i] . '.jpg';
+
+	if (file_exists(!$filename)) {
+		//file doenst exist yet, lets save it
+		$ch = curl_init($cardurls[$i]);
+		$fp = fopen('img/' . $cardnames[$i] . '.jpg', 'wb');
+		curl_setopt($ch, CURLOPT_FILE, $fp);
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_exec($ch);
+		curl_close($ch);
+		fclose($fp);
+
+		//merge('images/gradient-overlay.png', 'img/' . $cardnames[$i] . '.jpg', 'images/' . $cardnames[$i] . '_dark	.jpg');
+	}
 }
 
 

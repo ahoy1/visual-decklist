@@ -213,6 +213,10 @@ header {
   box-shadow: 0px -1.5px 15px #BDBDBD;
 }
 
+.top{
+  padding-bottom:25px;
+}
+
 .please-wait{
   text-align: center;
 }
@@ -376,7 +380,8 @@ body.canvas-active .canvas-container{
 }
 
 canvas{
-  width:290px;
+  max-width:290px;
+  max-height: 90vh;
 }
 
   .mana {
@@ -399,7 +404,7 @@ canvas{
     background-position: -40px 0px;
   }
   .m-2{
-    background-position: -60px 0px;
+    background-position: f 0px;
   }
   .m-3{
     background-position: -80px 0px;
@@ -486,19 +491,46 @@ canvas{
   .m-bg{
     background-position: -120px -60px
   }
-  .m-10{
+  .m-rw{
     background-position:-140px -60px;
   }
-  .m-rw{
+  .m-rg{
     background-position: -160px -60px
   }
-  .m-rg{
+  .m-gw{
     background-position: -180px -60px
   }
-  .m-gw{
+  .m-gu{
     background-position: -200px -60px
   }
-  .m-gu{
-    background-position: -220px -60px
+  .m-2w{
+    background-position:-20px -80px;
+  }
+  .m-2u{
+    background-position: -40px -80px
+  }
+  .m-2b{
+    background-position: -80px -80px
+  }
+  .m-2r{
+    background-position: -80px -80px
+  }
+  .m-2g{
+    background-position: -100px -80px
+  }
+  .m-wp{
+    background-position: -120px -80px
+  }
+  .m-up{
+    background-position:-140px -80px;
+  }
+  .m-bp{
+    background-position: -160px -80px
+  }
+  .m-rp{
+    background-position: -180px -80px
+  }
+  .m-gp{
+    background-position: -200px -80px
   }
   
