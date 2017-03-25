@@ -83919,7 +83919,15 @@ var vdl = {
 		  // add the name
 	    const cardNameTag = document.createElement('span');
 	    cardNameTag.className = 'card-name';
-	    cardNameTag.textContent = deck[i].name;
+	    console.log(deck[i].name);
+	    console.log(deck[i].name.length);
+	    let nameHTML = deck[i].name;
+	    if (deck[i].name.length > 17) {
+	    	nameHTML = `<small>${deck[i].name}</small>`;
+	    } 
+	    console.log(`nameHTML is ${nameHTML}`);
+	    // cardNameTag.innerHTML = deck[i].name;
+	    cardNameTag.innerHTML = nameHTML;
 	    leftDivTag.appendChild(cardNameTag);
 	    visualDeckList.appendChild(row);
 	  }

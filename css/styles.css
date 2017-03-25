@@ -129,6 +129,10 @@ ul li{
   margin: 0.3em;
 }
 
+small {
+  font-size: 0.8em;
+}
+
 .button-open{
     border:5px solid #673AB7;
     color: #673AB7;
