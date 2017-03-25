@@ -43,7 +43,7 @@ for ($i=0; $i < count($cardnames); $i++) {
 
 $filename = 'img/' . $cardnames[$i] . '.jpg';
 
-	if (file_exists(!$filename)) {
+	//if (file_exists(!$filename)) {
 		//file doenst exist yet, lets save it
 		$ch = curl_init($cardurls[$i]);
 		$fp = fopen('img/' . $cardnames[$i] . '.jpg', 'wb');
@@ -54,12 +54,12 @@ $filename = 'img/' . $cardnames[$i] . '.jpg';
 		fclose($fp);
 
 		//merge('images/gradient-overlay.png', 'img/' . $cardnames[$i] . '.jpg', 'images/' . $cardnames[$i] . '_dark	.jpg');
-	}
+	//}
 }
 
 
 
 
 
-echo 'finished saving card images';
+echo 'finished saving card image';
 

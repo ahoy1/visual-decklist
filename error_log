@@ -1,0 +1,12 @@
+[24-Mar-2017 15:11:47 America/Chicago] PHP Warning:  fopen(img/Blighted Agent.jpg): failed to open stream: No such file or directory in /home1/jacobph/public_html/vdl/save-to-server.php on line 49
+[24-Mar-2017 15:11:47 America/Chicago] PHP Warning:  curl_setopt(): supplied argument is not a valid File-Handle resource in /home1/jacobph/public_html/vdl/save-to-server.php on line 50
+[24-Mar-2017 15:11:47 America/Chicago] PHP Warning:  fclose() expects parameter 1 to be resource, boolean given in /home1/jacobph/public_html/vdl/save-to-server.php on line 54
+[24-Mar-2017 15:11:47 America/Chicago] PHP Warning:  fopen(img/Blossoming Defense.jpg): failed to open stream: No such file or directory in /home1/jacobph/public_html/vdl/save-to-server.php on line 49
+[24-Mar-2017 15:11:47 America/Chicago] PHP Warning:  curl_setopt(): supplied argument is not a valid File-Handle resource in /home1/jacobph/public_html/vdl/save-to-server.php on line 50
+[24-Mar-2017 15:11:47 America/Chicago] PHP Warning:  fclose() expects parameter 1 to be resource, boolean given in /home1/jacobph/public_html/vdl/save-to-server.php on line 54
+[24-Mar-2017 15:11:47 America/Chicago] PHP Warning:  fopen(img/Breeding Pool.jpg): failed to open stream: No such file or directory in /home1/jacobph/public_html/vdl/save-to-server.php on line 49
+[24-Mar-2017 15:11:47 America/Chicago] PHP Warning:  curl_setopt(): supplied argument is not a valid File-Handle resource in /home1/jacobph/public_html/vdl/save-to-server.php on line 50
+[24-Mar-2017 15:11:48 America/Chicago] PHP Warning:  fclose() expects parameter 1 to be resource, boolean given in /home1/jacobph/public_html/vdl/save-to-server.php on line 54
+[24-Mar-2017 15:11:48 America/Chicago] PHP Warning:  fopen(img/Grafdigger's Cage.jpg): failed to open stream: No such file or directory in /home1/jacobph/public_html/vdl/save-to-server.php on line 49
+[24-Mar-2017 15:11:48 America/Chicago] PHP Warning:  curl_setopt(): supplied argument is not a valid File-Handle resource in /home1/jacobph/public_html/vdl/save-to-server.php on line 50
+[24-Mar-2017 15:11:48 America/Chicago] PHP Warning:  fclose() expects parameter 1 to be resource, boolean given in /home1/jacobph/public_html/vdl/save-to-server.php on line 54

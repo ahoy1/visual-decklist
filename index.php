@@ -24,12 +24,7 @@
 2 Breeding Pool
 SIDEBOARD
 3 Grafdigger's Cage
-etc...">4 Blighted Agent
-3 Blossoming Defense
-2 Breeding Pool
-SIDEBOARD
-3 Grafdigger's Cage
-etc...
+etc...">
 </textarea>
 							<button id="button" class="button-primary">Generate Deck</button>
 					  </div>

@@ -83609,61 +83609,69 @@ module.exports = Request
 
 }).call(this,require('_process'),require("buffer").Buffer)
 },{"./lib/auth":404,"./lib/cookies":405,"./lib/getProxyFromURI":406,"./lib/har":407,"./lib/helpers":408,"./lib/multipart":409,"./lib/oauth":410,"./lib/querystring":411,"./lib/redirect":412,"./lib/tunnel":413,"_process":220,"aws-sign2":414,"aws4":415,"bl":417,"buffer":18,"caseless":428,"extend":431,"forever-agent":432,"form-data":433,"hawk":462,"http":242,"http-signature":463,"https":216,"is-typedarray":515,"isstream":516,"mime-types":518,"stream":241,"stringstream":527,"url":249,"util":253,"zlib":17}],537:[function(require,module,exports){
-//js ajax functions
+// js ajax functions
 function getOutput(postdata) {
   getRequest(
-    	'save-to-server.php', // URL for the PHP file
+		'save-to-server.php', // URL for the PHP file
        postdata, 		// our POST data
        drawOutput,  // handle successful request
        drawError    // handle error
   );
   return false;
-} 
+}
 
 // handles drawing an error message
-function drawError () {
-    var container = document.getElementById('output');
-    container.innerHTML = 'Bummer: there was an error!';
+function drawError() {
+  const container = document.getElementById('output');
+  container.innerHTML = 'Bummer: there was an error!';
 }
 // handles the response, adds the html
 function drawOutput(responseText) {
-    //var container = document.getElementById('output');
-    //container.innerHTML = responseText;
+    // var container = document.getElementById('output');
+    // container.innerHTML = responseText;
 }
 // helper function for cross-browser request object
 function getRequest(url, postdata, success, error) {
-    var req = false;
-    try{
+  let req = false;
+  try {
         // most browsers
-        req = new XMLHttpRequest();
-    } catch (e){
+    req = new XMLHttpRequest();
+  } catch (e) {
         // IE old versions
-        try{
-            req = new ActiveXObject("Msxml2.XMLHTTP");
-        } catch (e) {
+    try {
+      req = new ActiveXObject('Msxml2.XMLHTTP');
+    } catch (e) {
             // try an older version
-            try{
-                req = new ActiveXObject("Microsoft.XMLHTTP");
-            } catch (e){
-                return false;
-            }
-        }
+      try {
+        req = new ActiveXObject('Microsoft.XMLHTTP');
+      } catch (e) {
+        return false;
+      }
     }
-    if (!req) return false;
-    if (typeof success != 'function') success = function () {};
-    if (typeof error!= 'function') error = function () {};
-    req.onreadystatechange = function(){
-        if(req .readyState == 4){
-            return req.status === 200 ? 
-                success(req.responseText) : error(req.status)
-            ;
-        }
+  }
+  if (!req) return false;
+  if (typeof success !== 'function') success = function () {};
+  if (typeof error !== 'function') error = function () {};
+  req.onreadystatechange = function () {
+    if (req.readyState == 4) {
+    	console.log('saving done');
+    	vdl.renderDeck();
+      return req.status === 200 ? success(req.responseText) : error(req.status);
     }
-    req.open("POST", url, true);
-      req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  		req.send(postdata); 
-    //req.send(null);
-    return req;
+  };
+  req.open('POST', url, true);
+  req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  		req.send(postdata);
+    // req.send(null);
+  return req;
+}
+
+// test if a file exists
+function UrlExists(url) {
+    var http = new XMLHttpRequest();
+    http.open('HEAD', url, false);
+    http.send();
+    return http.status!=404;
 }
 
 const mtg = require('mtgsdk');
@@ -83674,94 +83682,89 @@ const mtg = require('mtgsdk');
 // 	}
 // );
 
-//removes duplicates from an array
+// removes duplicates from an array
 function unique(arr) {
-    var seen = {};
-    return arr.filter(function(item) {
-        return seen.hasOwnProperty(item) ? false : (seen[item] = true);
-    });
+  const seen = {};
+  return arr.filter(item => seen.hasOwnProperty(item) ? false : (seen[item] = true));
 }
 
 var vdl = {
-	state : {
-		'cardNames' : [],
-		'deck' : [],
-		'deckName' : '',
-		'queryList' : '',
+  state: {
+    cardNames: [],
+    deck: [],
+    deckName: '',
+    queryList: '',
+  },
+	// get user input from form
+  getUserInput() {
 
-	},
-	//get user input from form
-	getUserInput : function(){
-	
-	},
-	//parse userinput decklist into a queryList that the mtgsdk can accept
-	parseDecklist : function(deckLines){
-	  var queryListArr = [];
-	  var deck = [];
+  },
+	// parse userinput decklist into a queryList that the mtgsdk can accept
+  parseDecklist(deckLines) {
+	  let queryListArr = [];
+	  const deck = [];
 	  var queryName = '';
-	  var splitPartner = '';
-	  var isSplit = false;
+	  let splitPartner = '';
+	  let isSplit = false;
 
-	  for (var i = 0; i < deckLines.length; i++){
+	  for (let i = 0; i < deckLines.length; i++) {
 	  	queryName = '';
 	  	splitPartner = '';
 	  	isSplit = false;
-	    var number = deckLines[i].substr(0,deckLines[i].indexOf(' ')); //4
-	    //check if there's a number. treat lines without a number as a divider
-	    var hasNumber = !isNaN(parseInt(number));
+	    const number = deckLines[i].substr(0, deckLines[i].indexOf(' ')); // 4
+	    // check if there's a number. treat lines without a number as a divider
+	    const hasNumber = !isNaN(parseInt(number));
 	    if (hasNumber) {
-	      var name = deckLines[i].substr(deckLines[i].indexOf(' ')+1); //Lighting Bolt	
+	      var name = deckLines[i].substr(deckLines[i].indexOf(' ') + 1); // Lighting Bolt
 
-	     	//handle "aether" and split cards 
+	     	// handle "aether" and split cards
 		    queryName = name.toLowerCase();
 		    if (name.indexOf('aether') > -1) {
-					var queryName = name.replace ('aether', 'ether');
+      		var queryName = name.replace('aether', 'ether');
 		    }
-		    //handle split cards
+		    // handle split cards
 		    if (name.indexOf('//') > -1) {
 		    	isSplit = true;
 		    	var queryName = name.substr(0, name.indexOf('//')).trim().toLowerCase();
-
 		    }
 
-		    queryListArr.push(queryName);    	
-	    }
-	    else {
+		    queryListArr.push(queryName);
+	    } else {
 	    	var name = deckLines[i];
 	    }
 
 	    deck.push({
-	        'slot' : i,
-	        'name' : name,
-	        'queryName': queryName,
-	        'quantity' : number,
-	        'isSplit' : isSplit,
-	        'splitPartner' : splitPartner,
-	        'isDivider' : !hasNumber,
-	        'attributes' : {}
+	        slot: i,
+	        name,
+	        queryName,
+	        quantity: number,
+	        isSplit,
+	        splitPartner,
+	        isDivider: !hasNumber,
+	        attributes: {}
 	    });
-	  };
+	  }
 	  vdl.state.deck = deck;
 	  queryListArr = unique(queryListArr);
 	  vdl.state.queryList = queryListArr;
 
-		//call requestCards here
-		vdl.updateLocalStorage(vdl.state);
-		vdl.requestCards(vdl.state.queryList);
-	},
-	//make the API call
-	requestCards : function(queryListArr){
-		var queryListString = queryListArr.join('|').toLowerCase();
-  	var cardData = [];
-	  var emitter = mtg.card.all({ name : queryListString });
-	  emitter.on('data', card => {
+		// call requestCards here
+    vdl.updateLocalStorage(vdl.state);
+    vdl.requestCards(vdl.state.queryList);
+  },
+	// make the API call
+  requestCards(queryListArr) {
+    const queryListString = queryListArr.join('|').toLowerCase();
+  	const cardData = [];
+	  const emitter = mtg.card.all({ name: queryListString });
+	  emitter.on('data', (card) => {
 	    cardData.push(card);
 	  });
-	  emitter.on('end', finish => {
-	    for (var i = 0; i < cardData.length; i++) {
-	      var thisCard = cardData[i];
-	      var thisCardName = thisCard.name.toLowerCase();
-	      for (var j = 0; j < vdl.state.deck.length; j++) {
+	  emitter.on('end', (finish) => {
+	    for (let i = 0; i < cardData.length; i++) {
+	      const thisCard = cardData[i];
+	      const thisCardName = thisCard.name.toLowerCase();
+	      for (let j = 0; j < vdl.state.deck.length; j++) {
 	        // if (thisCardName === vdl.state.deck[j].name.toLowerCase()){
 	        //   vdl.state.deck[j].attributes = thisCard;
 	        // }
@@ -83770,135 +83773,136 @@ var vdl = {
 	        // this could cause problems if a split card name is contined w/in another card name
 	        // think fire//ice and fireball
 	        if (vdl.state.deck[j].name.toLowerCase().indexOf(thisCardName) > -1) {
-	          vdl.state.deck[j].attributes = thisCard;	
+	          vdl.state.deck[j].attributes = thisCard;
 	        }
 	      }
 	    }
 
 	    console.log(cardData);
-	
-	    //call the saveCardImages function
-			vdl.saveCardImages();
+
+	    // call the saveCardImages function
+    vdl.saveCardImages();
 	  });
-	},
-	//save card images to the server
-	saveCardImages : function(){	
-		console.log('saveCardImages called');
-		console.log(vdl.state);
-		var queryStringURLs = "cardurls=";
-		var queryStringNames = "cardnames=";
-		var deck = vdl.state.deck;
+  },
+	// save card images to the server
+  saveCardImages() {
+    console.log('saveCardImages called');
+    console.log(vdl.state);
+    let queryStringURLs = 'cardurls=';
+    let queryStringNames = 'cardnames=';
+    const deck = vdl.state.deck;
 
-		for (var i = 0; i < deck.length; i++) {
-			if (deck[i].isDivider != true) {
-				queryStringURLs = queryStringURLs + deck[i].attributes.imageUrl.replace('&type=card', '%26type=card') + ',';
-				console.log(queryStringURLs);
-				queryStringNames = queryStringNames + encodeURI(deck[i].attributes.name) + ',';
-			}
-		}
-		var queryString = queryStringURLs.replace(/,\s*$/, "") + '&' + queryStringNames.replace(/,\s*$/, "");
-		console.log(`query string is ${queryString}`);
-		getOutput(queryString);
-		vdl.renderDeck();
-	},
-	//update the state, also add the state obj to localStorage
-	updateState : function(cardNames, deck, deckName, queryList){
-		if (cardNames) {
-			this.state.cardNames = cardNames;
-		}
-		if (deck) {
-			this.state.deck = deck;
-		}
-		if (deckName) {
-			this.state.deckName = deckName;
-		}
-		if (queryList) {
-			this.state.queryList = queryList;
-		}
-		vdl.updateLocalStorage(vdl.state);
-	},
-	updateLocalStorage : function(state){
-		localStorage.setItem('visualDecklistState', state)
-	},
-	clearState : function(){
-		this.state = {
-			'cardNames' : [],
-			'deck' : [],
-			'deckName' : '',
-			'queryList' : '',
-		};
-		this.updateLocalStorage(this.state);
-	},
-	renderDeck : function(){
-		//display the contents of .col-right
-		document.querySelector('.col-right').classList.add('active');
-		var deck = vdl.state.deck;
-		var visualDeckList = document.getElementById('visualDeckList');
+    for (let i = 0; i < deck.length; i++) {
+      if (deck[i].isDivider != true) {
+        queryStringURLs = `${queryStringURLs + deck[i].attributes.imageUrl.replace('&type=card', '%26type=card')},`;
+        console.log(queryStringURLs);
+        queryStringNames = `${queryStringNames + encodeURI(deck[i].attributes.name)},`;
+      }
+    }
+    const queryString = `${queryStringURLs.replace(/,\s*$/, '')}&${queryStringNames.replace(/,\s*$/, '')}`;
+    console.log(`query string is ${queryString}`);
+    getOutput(queryString);
+  },
+	// update the state, also add the state obj to localStorage
+  updateState(cardNames, deck, deckName, queryList) {
+    if (cardNames) {
+      this.state.cardNames = cardNames;
+    }
+    if (deck) {
+      this.state.deck = deck;
+    }
+    if (deckName) {
+      this.state.deckName = deckName;
+    }
+    if (queryList) {
+      this.state.queryList = queryList;
+    }
+    console.log('updating state:');
+    console.log(vdl.state);
+    vdl.updateLocalStorage(vdl.state);
+  },
+  updateLocalStorage(state) {
+    localStorage.setItem('visualDecklistState', JSON.stringify(state));
+  },
+  clearState() {
+    this.state = {
+      cardNames: [],
+      deck: [],
+      deckName: '',
+      queryList: '',
+    };
+    this.updateLocalStorage(this.state);
+  },
+  renderDeck() {
+  	//re-enable the button
+  	document.getElementById('button').disabled = false;
+    document.getElementById('pleaseWait').classList.remove('please-wait');
+
+		// display the contents of .col-right
+    document.querySelector('.col-right').classList.add('active');
+    const deck = vdl.state.deck;
+    const visualDeckList = document.getElementById('visualDeckList');
 	  visualDeckList.innerHTML = '';
-	  var deckNameTag = document.createElement('div');
+	  const deckNameTag = document.createElement('div');
 	  deckNameTag.className = 'deck-name';
-	  deckNameTag.innerHTML = '<div>' + vdl.state.deckName + '</div>';
+	  deckNameTag.innerHTML = `<div>${vdl.state.deckName}</div>`;
 	  visualDeckList.appendChild(deckNameTag);
-	  for (var i = 0; i < deck.length; i++) {
-	    //create a row representing a deckslot
-	    var row = document.createElement('div');
-	    row.className = 'card cardslot' + i;
+	  for (let i = 0; i < deck.length; i++) {
+	    // create a row representing a deckslot
+	    const row = document.createElement('div');
+	    row.className = `card cardslot${i}`;
 
-		  //add card darken filter
-	    var cardDarkenTag = document.createElement('div');
+		  // add card darken filter
+	    const cardDarkenTag = document.createElement('div');
 	    cardDarkenTag.className = 'card-darken';
 
 	    if (deck[i].isDivider) {
+	    	// cardFlexTag & leftTagDiv is duplicated in either side of this if statement
+	    	// these elements have to be appeneded to the DOM AFTER the cardBgTag div to
+	    	// to make the screenshot work properly
 
-	    	//cardFlexTag & leftTagDiv is duplicated in either side of this if statement
-	    	//these elements have to be appeneded to the DOM AFTER the cardBgTag div to
-	    	//to make the screenshot work properly
-
-	    	//add flex container 
+	    	// add flex container
 		    var cardFlexTag = document.createElement('div');
 		    cardFlexTag.className = 'card-flex';
 
-		    //add container for quantity and name
+		    // add container for quantity and name
 		    var leftDivTag = document.createElement('div');
 		    cardFlexTag.appendChild(leftDivTag);
 
-				row.className = row.className + ' divider';
-	    }
-	    else {
-
-	    	//add card bg 
-		    var cardBgTag = document.createElement('div');
+      row.className = `${row.className} divider`;
+	    } else {
+	    	// add card bg
+		    const cardBgTag = document.createElement('div');
 		    cardBgTag.className = 'card-bg';
 		    row.appendChild(cardBgTag);
 
-		    //add flex container 
+		    // add flex container
 		    var cardFlexTag = document.createElement('div');
 		    cardFlexTag.className = 'card-flex';
 
-		    //add container for quantity and name
+		    // add container for quantity and name
 		    var leftDivTag = document.createElement('div');
 		    cardFlexTag.appendChild(leftDivTag);
 
-	    	if (deck[i].isSplit){
-	    		//cardBgTag.setAttribute('style', 'background-image:url("' + deck[i].attributes.imageUrl + '"), url("' + deck[i].attributes.imageUrl + '")');
-	    		cardBgTag.setAttribute('style', 'background-image:url("img/' + encodeURIComponent(deck[i].attributes.name) + '.jpg"), url("img/' + encodeURIComponent(deck[i].attributes.name) + '.jpg")');
-					row.className = row.className + ' split-card';
+	    	if (deck[i].isSplit) {
+	    		// cardBgTag.setAttribute('style', 'background-image:url("' + deck[i].attributes.imageUrl + '"), url("' + deck[i].attributes.imageUrl + '")');
+	    		cardBgTag.setAttribute('style', `background-image:url("img/${encodeURIComponent(deck[i].attributes.name)}.jpg"), url("img/${encodeURIComponent(deck[i].attributes.name)}.jpg")`);
+      		row.className = `${row.className} split-card`;
+	    	}	    	else {
+	    	  // cardBgTag.setAttribute('style', 'background-image:url("' + deck[i].attributes.imageUrl + '")');
+	    		cardBgTag.setAttribute('style', `background-image:url("img/${encodeURIComponent(deck[i].attributes.name)}.jpg")`);
 	    	}
-	    	else {
-	    	  //cardBgTag.setAttribute('style', 'background-image:url("' + deck[i].attributes.imageUrl + '")');
-	    		cardBgTag.setAttribute('style', 'background-image:url("img/' + encodeURIComponent(deck[i].attributes.name) + '.jpg")');
-	    	}
-	    	//add the quantity
-		    var quantityTag = document.createElement('span');
+	    	// add the quantity
+		    const quantityTag = document.createElement('span');
 		    quantityTag.className = 'card-quantity';
-		    quantityTag.innerHTML = deck[i].quantity + '&nbsp;';
+		    quantityTag.innerHTML = `${deck[i].quantity}&nbsp;`;
 		    leftDivTag.appendChild(quantityTag);
 
-		    //add the mana cost
-		    var manaCostTag = document.createElement('div');
+		    // add the mana cost
+		    const manaCostTag = document.createElement('div');
 		    manaCostTag.className = 'mana-cost';
-		    var thisManaCost = deck[i].attributes.manaCost;
-		    if (typeof thisManaCost != 'undefined') {
+		    const thisManaCost = deck[i].attributes.manaCost;
+		    if (typeof thisManaCost !== 'undefined') {
 		      thisManaCostHTML = thisManaCost.toLowerCase();
 		      thisManaCostHTML = thisManaCostHTML.replace(/{/g, '<span class="mana m-');
 		      thisManaCostHTML = thisManaCostHTML.replace(/\//g, '');
@@ -83907,52 +83911,52 @@ var vdl = {
 		      manaCostTag.innerHTML = thisManaCostHTML;
 		    }
 		    cardFlexTag.appendChild(manaCostTag);
-			}
+    }
 	    row.appendChild(cardDarkenTag);
 
 	    row.appendChild(cardFlexTag);
-			
-		  //add the name
-	    var cardNameTag = document.createElement('span');
+
+		  // add the name
+	    const cardNameTag = document.createElement('span');
 	    cardNameTag.className = 'card-name';
 	    cardNameTag.textContent = deck[i].name;
 	    leftDivTag.appendChild(cardNameTag);
 	    visualDeckList.appendChild(row);
 	  }
 
-	  var builtWithTag = document.createElement('div');
+	  const builtWithTag = document.createElement('div');
 	  builtWithTag.className = 'built-with';
-	  builtWithTag.innerHTML ='VisualDecklist.com';
+	  builtWithTag.innerHTML = 'VisualDecklist.com';
 	  visualDeckList.appendChild(builtWithTag);
 	  document.getElementById('pleaseWait').className = 'hidden please-wait';
 
 
 	  ga('send', 'event', 'DeckListBuilt');
 	  return false;
-	},
-	init : function(){
-		document.getElementById('button').addEventListener('click', function(){
+  },
+  init() {
+    document.getElementById('button').addEventListener('click', () => {
+    	this.disabled = true;
+			// activate please wait text
+      document.getElementById('pleaseWait').className = 'please-wait';
 
-			//activate please wait text
-			document.getElementById('pleaseWait').className = 'please-wait';
-
-			//get inputs
-		  var deckName = document.getElementById('deckName').value;
-		  var deckLines = document.getElementById('decklist').value.split('\n');
-		  //strip empty elements from array. works because empty strings are falsey
+			// get inputs
+		  const deckName = document.getElementById('deckName').value;
+		  let deckLines = document.getElementById('decklist').value.split('\n');
+		  // strip empty elements from array. works because empty strings are falsey
 		  deckLines = deckLines.filter(Boolean);
 
-		  //clear the state from the previous decklist, if there was one
+		  // clear the state from the previous decklist, if there was one
 		  vdl.clearState();
-			
-			//cardNames, deck, deckName, queryList
-			vdl.updateState('', vdl.state.deck, deckName, vdl.state.queryList);
 
-			vdl.parseDecklist(deckLines);			
+			// cardNames, deck, deckName, queryList
+      vdl.updateState('', vdl.state.deck, deckName, vdl.state.queryList);
+
+      vdl.parseDecklist(deckLines);
 		 }, false);
-	},
-}
+  },
+};
 
 vdl.init();
-	
+
 },{"mtgsdk":266}]},{},[537]);
