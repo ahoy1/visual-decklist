@@ -259,9 +259,8 @@ header {
     background-position: -71px -59px;
 }
 .deck-name{
-  padding: 0 35px;
+  padding: 0 10px;
   height: 35px;
-  text-align: right;
   border-bottom: 3px solid #777;
   font-size: 18px;
 }
