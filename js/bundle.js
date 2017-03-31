@@ -83716,9 +83716,12 @@ var vdl = {
 	    const hasNumber = !isNaN(parseInt(number));
 	    if (hasNumber) {
 	      var name = deckLines[i].substr(deckLines[i].indexOf(' ') + 1); // Lighting Bolt
+	     	queryName = name.toLowerCase();
 
-	     	// handle "aether" and split cards
-		    queryName = name.toLowerCase();
+	     	// if (name.indexOf(',') > -1) {
+	     	// 	var queryName = name.replace(',', '%2C');
+	     	// }
+		    // handle "aether" and split cards
 		    if (name.indexOf('aether') > -1) {
       		var queryName = name.replace('aether', 'ether');
 		    }
@@ -83747,6 +83750,9 @@ var vdl = {
 	  vdl.state.deck = deck;
 	  queryListArr = unique(queryListArr);
 	  vdl.state.queryList = queryListArr;
+	  console.log('finished building query list');
+    console.log(vdl.state);
+
 
 		// call requestCards here
     vdl.updateLocalStorage(vdl.state);
@@ -83791,12 +83797,19 @@ var vdl = {
     let queryStringURLs = 'cardurls=';
     let queryStringNames = 'cardnames=';
     const deck = vdl.state.deck;
+    console.log(deck);
 
     for (let i = 0; i < deck.length; i++) {
       if (deck[i].isDivider != true) {
+      	var cardname = deck[i].attributes.name.replace(',', '');
         queryStringURLs = `${queryStringURLs + deck[i].attributes.imageUrl.replace('&type=card', '%26type=card')},`;
         console.log(queryStringURLs);
-        queryStringNames = `${queryStringNames + encodeURI(deck[i].attributes.name)},`;
+        queryStringNames = `${queryStringNames + encodeURI(cardname)},`;
+        console.log(queryStringNames);
+        // queryStringURLs = `${queryStringURLs + deck[i].attributes.imageUrl.replace('&type=card', '%26type=card')},`;
+        // console.log(queryStringURLs);
+        // queryStringNames = `${queryStringNames + encodeURI(deck[i].attributes.name)},`;
+        // console.log(queryStringNames);
       }
     }
     const queryString = `${queryStringURLs.replace(/,\s*$/, '')}&${queryStringNames.replace(/,\s*$/, '')}`;
@@ -83890,7 +83903,7 @@ var vdl = {
       		row.className = `${row.className} split-card`;
 	    	}	    	else {
 	    	  // cardBgTag.setAttribute('style', 'background-image:url("' + deck[i].attributes.imageUrl + '")');
-	    		cardBgTag.setAttribute('style', `background-image:url("img/${encodeURIComponent(deck[i].attributes.name)}.jpg")`);
+	    		cardBgTag.setAttribute('style', `background-image:url("img/${encodeURIComponent(deck[i].attributes.name.replace(',', ''))}.jpg")`);
 	    	}
 	    	// add the quantity
 		    const quantityTag = document.createElement('span');

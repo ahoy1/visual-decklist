@@ -105,9 +105,12 @@ var vdl = {
 	    const hasNumber = !isNaN(parseInt(number));
 	    if (hasNumber) {
 	      var name = deckLines[i].substr(deckLines[i].indexOf(' ') + 1); // Lighting Bolt
+	     	queryName = name.toLowerCase();
 
-	     	// handle "aether" and split cards
-		    queryName = name.toLowerCase();
+	     	// if (name.indexOf(',') > -1) {
+	     	// 	var queryName = name.replace(',', '%2C');
+	     	// }
+		    // handle "aether" and split cards
 		    if (name.indexOf('aether') > -1) {
       		var queryName = name.replace('aether', 'ether');
 		    }
@@ -136,6 +139,9 @@ var vdl = {
 	  vdl.state.deck = deck;
 	  queryListArr = unique(queryListArr);
 	  vdl.state.queryList = queryListArr;
+	  console.log('finished building query list');
+    console.log(vdl.state);
+
 
 		// call requestCards here
     vdl.updateLocalStorage(vdl.state);
@@ -172,6 +178,7 @@ var vdl = {
 	    // call the saveCardImages function
     vdl.saveCardImages();
 	  });
+<<<<<<< HEAD
   },
 	// save card images to the server
   saveCardImages() {
@@ -180,12 +187,19 @@ var vdl = {
     let queryStringURLs = 'cardurls=';
     let queryStringNames = 'cardnames=';
     const deck = vdl.state.deck;
+    console.log(deck);
 
     for (let i = 0; i < deck.length; i++) {
       if (deck[i].isDivider != true) {
+      	var cardname = deck[i].attributes.name.replace(',', '');
         queryStringURLs = `${queryStringURLs + deck[i].attributes.imageUrl.replace('&type=card', '%26type=card')},`;
         console.log(queryStringURLs);
-        queryStringNames = `${queryStringNames + encodeURI(deck[i].attributes.name)},`;
+        queryStringNames = `${queryStringNames + encodeURI(cardname)},`;
+        console.log(queryStringNames);
+        // queryStringURLs = `${queryStringURLs + deck[i].attributes.imageUrl.replace('&type=card', '%26type=card')},`;
+        // console.log(queryStringURLs);
+        // queryStringNames = `${queryStringNames + encodeURI(deck[i].attributes.name)},`;
+        // console.log(queryStringNames);
       }
     }
     const queryString = `${queryStringURLs.replace(/,\s*$/, '')}&${queryStringNames.replace(/,\s*$/, '')}`;
@@ -231,6 +245,40 @@ var vdl = {
     document.querySelector('.col-right').classList.add('active');
     const deck = vdl.state.deck;
     const visualDeckList = document.getElementById('visualDeckList');
+=======
+	},
+	//update the state, also add the state obj to localStorage
+	updateState : function(cardNames, deck, deckName, queryList){
+		if (cardNames) {
+			this.state.cardNames = cardNames;
+		}
+		if (deck) {
+			this.state.deck = deck;
+		}
+		if (deckName) {
+			this.state.deckName = deckName;
+		}
+		if (queryList) {
+			this.state.queryList = queryList;
+		}
+		vdl.updateLocalStorage(this.state);
+	},
+	updateLocalStorage : function(state){
+		localStorage.setItem('visualDecklistState', state)
+	},
+	clearState : function(){
+		this.state = {
+			'cardNames' : [],
+			'deck' : [],
+			'deckName' : '',
+			'queryList' : '',
+		};
+		this.updateLocalStorage(this.state);
+	},
+	renderDeck : function(){
+		var deck = vdl.state.deck;
+		var visualDeckList = document.getElementById('visualDeckList');
+>>>>>>> origin/master
 	  visualDeckList.innerHTML = '';
 	  const deckNameTag = document.createElement('div');
 	  deckNameTag.className = 'deck-name';
@@ -279,7 +327,7 @@ var vdl = {
       		row.className = `${row.className} split-card`;
 	    	}	    	else {
 	    	  // cardBgTag.setAttribute('style', 'background-image:url("' + deck[i].attributes.imageUrl + '")');
-	    		cardBgTag.setAttribute('style', `background-image:url("img/${encodeURIComponent(deck[i].attributes.name)}.jpg")`);
+	    		cardBgTag.setAttribute('style', `background-image:url("img/${encodeURIComponent(deck[i].attributes.name.replace(',', ''))}.jpg")`);
 	    	}
 	    	// add the quantity
 		    const quantityTag = document.createElement('span');
@@ -323,7 +371,11 @@ var vdl = {
 
 	  const builtWithTag = document.createElement('div');
 	  builtWithTag.className = 'built-with';
+<<<<<<< HEAD
 	  builtWithTag.innerHTML = 'VisualDecklist.com';
+=======
+	  builtWithTag.innerHTML ='built with VisualDecklist.com';
+>>>>>>> origin/master
 	  visualDeckList.appendChild(builtWithTag);
 	  document.getElementById('pleaseWait').className = 'hidden please-wait';
 
@@ -351,7 +403,16 @@ var vdl = {
 
       vdl.parseDecklist(deckLines);
 		 }, false);
+<<<<<<< HEAD
   },
 };
+=======
+	},
+
+	render : function(){
+
+	},
+}
+>>>>>>> origin/master
 
 vdl.init();
