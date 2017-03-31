@@ -91,35 +91,8 @@ etc...">
             theCanvas = canvas;
             document.querySelector('#canvas-container').appendChild(canvas);
             document.body.classList.add('canvas-active');
-
-            // Canvas2Image.saveAsPNG(canvas);
-            // $(body).append(canvas);
-
-        }
-    });
-				// html2canvas(document.querySelector('#visualDeckList'), {
-    //         //"canvas": canvas,
-    //         "logging": true, //Enable log (use Web Console for get Errors and Warnings)
-    //         //"proxy":"php/html2canvasproxy.php",
-    //         "onrendered": function(canvas) {
-    //             var img = new Image();
-    //             img.onload = function() {
-    //                 img.onload = null;
-    //                 document.body.appendChild(canvas);
-    //                 console.log('img.onload');
-    //             };
-    //             img.onerror = function() {
-    //             		console.log('img.onerror');
-    //                 img.onerror = null;
-    //                 if(window.console.log) {
-    //                     window.console.log("Not loaded image from canvas.toDataURL");
-    //                 } else {
-    //                     alert("Not loaded image from canvas.toDataURL");
-    //                 }
-    //             };
-    //             img.src = canvas.toDataURL("image/png");
-    //         }
-    //     });
+        	}
+    		});
     	});
 
     	document.querySelector('.close').addEventListener('click', function(){
