@@ -178,7 +178,6 @@ var vdl = {
 	    // call the saveCardImages function
     vdl.saveCardImages();
 	  });
-<<<<<<< HEAD
   },
 	// save card images to the server
   saveCardImages() {
@@ -245,40 +244,6 @@ var vdl = {
     document.querySelector('.col-right').classList.add('active');
     const deck = vdl.state.deck;
     const visualDeckList = document.getElementById('visualDeckList');
-=======
-	},
-	//update the state, also add the state obj to localStorage
-	updateState : function(cardNames, deck, deckName, queryList){
-		if (cardNames) {
-			this.state.cardNames = cardNames;
-		}
-		if (deck) {
-			this.state.deck = deck;
-		}
-		if (deckName) {
-			this.state.deckName = deckName;
-		}
-		if (queryList) {
-			this.state.queryList = queryList;
-		}
-		vdl.updateLocalStorage(this.state);
-	},
-	updateLocalStorage : function(state){
-		localStorage.setItem('visualDecklistState', state)
-	},
-	clearState : function(){
-		this.state = {
-			'cardNames' : [],
-			'deck' : [],
-			'deckName' : '',
-			'queryList' : '',
-		};
-		this.updateLocalStorage(this.state);
-	},
-	renderDeck : function(){
-		var deck = vdl.state.deck;
-		var visualDeckList = document.getElementById('visualDeckList');
->>>>>>> origin/master
 	  visualDeckList.innerHTML = '';
 	  const deckNameTag = document.createElement('div');
 	  deckNameTag.className = 'deck-name';
@@ -371,11 +336,7 @@ var vdl = {
 
 	  const builtWithTag = document.createElement('div');
 	  builtWithTag.className = 'built-with';
-<<<<<<< HEAD
 	  builtWithTag.innerHTML = 'VisualDecklist.com';
-=======
-	  builtWithTag.innerHTML ='built with VisualDecklist.com';
->>>>>>> origin/master
 	  visualDeckList.appendChild(builtWithTag);
 	  document.getElementById('pleaseWait').className = 'hidden please-wait';
 
@@ -403,16 +364,7 @@ var vdl = {
 
       vdl.parseDecklist(deckLines);
 		 }, false);
-<<<<<<< HEAD
   },
 };
-=======
-	},
-
-	render : function(){
-
-	},
-}
->>>>>>> origin/master
 
 vdl.init();
