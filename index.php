@@ -3,7 +3,7 @@
 		<meta charset="UTF-8" />
 	  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	  <title>Visual Decklist Generator for Magic: The Gathering</title>
-		<link rel="stylesheet" href="css/styles.css">
+		<link rel="stylesheet" href="css/vdl.min.css">
 	</head>
 	<body>	
 	  <section class="top">
@@ -30,7 +30,6 @@ etc...">
 					  </div>
 					</div>
 					<div class="col col-right">
-						<p class="hidden please-wait" id="pleaseWait">Fetching card data...</p>
 						<div id="visualDeckList" class="visual-deck-list">
 						</div>
 						<button id="screenShot" class="button-primary">Get Saveable PNG</button>
@@ -61,6 +60,15 @@ etc...">
 				<p class="disclaimer">This website is not produced by, endorsed by, supported by, or affiliated with Wizards of the Coast. The copyright for Magic: the Gathering and all associated card names and card images are held by Wizards of the Coast.</p>
 			</div>
 		</footer>
+		<div class="loading">
+			<div class="flickity-container">
+			  <div class="hand">
+			    <div class="shuffle-card card-1"><span></span></div>
+			    <div class="shuffle-card card-2"><span></span></div>
+			    <div class="shuffle-card card-3"><span></span></div>
+			  </div>
+			</div>
+		</div>
 
 		<script src="js/html2canvas.js"></script>
 		<script src="js/bundle.js"></script>

@@ -83847,9 +83847,11 @@ var vdl = {
     this.updateLocalStorage(this.state);
   },
   renderDeck() {
-  	//re-enable the button
+  	//re-enable the button and remove loading classes
   	document.getElementById('button').disabled = false;
-    document.getElementById('pleaseWait').classList.remove('please-wait');
+    document.body.classList.remove('loading-active');
+    document.querySelector('.loading').classList.remove('active');
+
 
 		// display the contents of .col-right
     document.querySelector('.col-right').classList.add('active');
@@ -83949,7 +83951,6 @@ var vdl = {
 	  builtWithTag.className = 'built-with';
 	  builtWithTag.innerHTML = 'VisualDecklist.com';
 	  visualDeckList.appendChild(builtWithTag);
-	  document.getElementById('pleaseWait').className = 'hidden please-wait';
 
 
 	  ga('send', 'event', 'DeckListBuilt');
@@ -83958,8 +83959,9 @@ var vdl = {
   init() {
     document.getElementById('button').addEventListener('click', () => {
     	this.disabled = true;
-			// activate please wait text
-      document.getElementById('pleaseWait').className = 'please-wait';
+			// activate loading animation
+      document.body.classList.add('loading-active');
+      document.querySelector('.loading').classList.add('active');
 
 			// get inputs
 		  const deckName = document.getElementById('deckName').value;
